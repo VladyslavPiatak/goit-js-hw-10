@@ -16,6 +16,7 @@ const btnStart = document.querySelector("[data-start]");
 const inputTime = document.querySelector("#datetime-picker");
 const showTime = document.querySelectorAll(".value");
 
+btnStart.disabled = true;
 
 const options = {
   enableTime: true,
@@ -30,8 +31,6 @@ const options = {
         message: `Please choose a date in the future`,
         position: 'topRight',
       });
-      btnStart.disabled = true;
-      btnStart.classList.remove(`btn-active`);
     } else {
       btnStart.disabled = false;
       btnStart.classList.add(`btn-active`);
@@ -39,21 +38,18 @@ const options = {
   },
 };
 
-btnStart.disabled = true;
-
 flatpickr("#datetime-picker", options);
 
 
 btnStart.addEventListener("click", event => {
+  event.preventDefault();
   const repeatTime = setInterval(() => {
     differenceTime = userSelectedDate - new Date(); 
-    event.preventDefault();
     inputTime.disabled = true;
     btnStart.classList.remove(`btn-active`);
 
     if (differenceTime < 1) {
       btnStart.disabled = true;
-      inputTime.disabled = false;
       clearInterval(repeatTime);
       return;
     }
@@ -65,7 +61,6 @@ btnStart.addEventListener("click", event => {
     showTime[3].innerText = convertedTime.seconds.toString().padStart(2, '0');
   }, 1000);
 });
-
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
