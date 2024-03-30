@@ -31,6 +31,8 @@ const options = {
         message: `Please choose a date in the future`,
         position: 'topRight',
       });
+      btnStart.disabled = true;
+      btnStart.classList.remove(`btn-active`);
     } else {
       btnStart.disabled = false;
       btnStart.classList.add(`btn-active`);
