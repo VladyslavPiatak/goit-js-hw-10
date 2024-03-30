@@ -44,15 +44,14 @@ flatpickr("#datetime-picker", options);
 btnStart.addEventListener("click", event => {
   event.preventDefault();
   const repeatTime = setInterval(() => {
-    differenceTime = userSelectedDate - new Date(); 
-    inputTime.disabled = true;
-    btnStart.classList.remove(`btn-active`);
-
     if (differenceTime < 1) {
-      btnStart.disabled = true;
       clearInterval(repeatTime);
       return;
     }
+    differenceTime = userSelectedDate - new Date(); 
+    inputTime.disabled = true;
+    btnStart.disabled = true;
+    btnStart.classList.remove(`btn-active`);
 
     const convertedTime = convertMs(differenceTime);
     showTime[0].innerText = convertedTime.days.toString().padStart(2, '0');
