@@ -10,11 +10,11 @@ import "izitoast/dist/css/iziToast.min.css";
 
 
 let userSelectedDate = 0;
-let differenceTime = 0;
+let timeDifference = 0;
 
 const btnStart = document.querySelector("[data-start]");
-const inputTime = document.querySelector("#datetime-picker");
 const showTime = document.querySelectorAll(".value");
+const [days, hours, minutes, seconds] = showTime;
 
 btnStart.disabled = true;
 
@@ -25,14 +25,18 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     userSelectedDate = selectedDates[0];
-    differenceTime = userSelectedDate - new Date(); 
-    if (differenceTime < 1) {
+    timeDifference = userSelectedDate - new Date(); 
+    if (timeDifference < 1) {
       iziToast.error({
         message: `Please choose a date in the future`,
         position: 'topRight',
       });
       btnStart.disabled = true;
       btnStart.classList.remove(`btn-active`);
+      days.innerText = "00";
+      hours.innerText = "00";
+      minutes.innerText = "00";
+      seconds.innerText = "00";
     } else {
       btnStart.disabled = false;
       btnStart.classList.add(`btn-active`);
@@ -43,21 +47,22 @@ const options = {
 flatpickr("#datetime-picker", options);
 
 
+
 btnStart.addEventListener("click", event => {
   event.preventDefault();
-  const repeatTime = setInterval(() => {
-    if (differenceTime < 1000) {
-      clearInterval(repeatTime);
+  const countdownInterval = setInterval(() => {
+    if (timeDifference < 1000) {
+      clearInterval(countdownInterval);
       return;
     }
-    differenceTime = userSelectedDate - new Date(); 
+    timeDifference = userSelectedDate - new Date(); 
     btnStart.classList.remove(`btn-active`);
 
-    const convertedTime = convertMs(differenceTime);
-    showTime[0].innerText = convertedTime.days.toString().padStart(2, '0');
-    showTime[1].innerText = convertedTime.hours.toString().padStart(2, '0');
-    showTime[2].innerText = convertedTime.minutes.toString().padStart(2, '0');
-    showTime[3].innerText = convertedTime.seconds.toString().padStart(2, '0');
+    const convertedTime = convertMs(timeDifference);
+    days.innerText = convertedTime.days.toString().padStart(2, '0');
+    hours.innerText = convertedTime.hours.toString().padStart(2, '0');
+    minutes.innerText = convertedTime.minutes.toString().padStart(2, '0');
+    seconds.innerText = convertedTime.seconds.toString().padStart(2, '0');
   }, 1000);
 });
 

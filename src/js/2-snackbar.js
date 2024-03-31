@@ -10,33 +10,30 @@ const dateForm = document.querySelector(".form");
 
 dateForm.addEventListener('submit', event => {
   event.preventDefault();
-  const inputTimer = event.currentTarget.elements.delay.value;
-  const inputState = event.currentTarget.elements.state.value;
+  const delay = event.currentTarget.elements.delay.value;
+  const state = event.currentTarget.elements.state.value;
 
   const promise = new Promise((resolve, reject) => {
     setTimeout(() => {
-      console.log(inputTimer, inputState);
-      if (inputState ==="fulfilled") {
-        resolve();
+      if (state ==="fulfilled") {
+        resolve(delay);
       } else {
-        reject();
+        reject(delay);
       }
-    }, inputTimer);
+    }, delay);
   });
 
 promise
   .then(value => {
     iziToast.success({  
-      color: 'green',
       position: "topRight",
-      message: `✅ Fulfilled promise in ${inputTimer}ms`
+      message: `✅ Fulfilled promise in ${delay}ms`
   })
   })
   .catch(error => {
     iziToast.error({ 
-      color: 'red',
       position: "topRight",          
-      message: `❌ Rejected promise in ${inputTimer}ms`
+      message: `❌ Rejected promise in ${delay}ms`
   })
   });
 });
