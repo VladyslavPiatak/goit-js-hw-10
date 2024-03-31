@@ -46,13 +46,11 @@ flatpickr("#datetime-picker", options);
 btnStart.addEventListener("click", event => {
   event.preventDefault();
   const repeatTime = setInterval(() => {
-    if (differenceTime < 1) {
+    if (differenceTime < 1000) {
       clearInterval(repeatTime);
       return;
     }
     differenceTime = userSelectedDate - new Date(); 
-    inputTime.disabled = true;
-    btnStart.disabled = true;
     btnStart.classList.remove(`btn-active`);
 
     const convertedTime = convertMs(differenceTime);
@@ -62,6 +60,7 @@ btnStart.addEventListener("click", event => {
     showTime[3].innerText = convertedTime.seconds.toString().padStart(2, '0');
   }, 1000);
 });
+
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
